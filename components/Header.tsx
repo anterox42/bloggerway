@@ -38,7 +38,7 @@ const Header = () => {
           </Name>
         </Link>
 
-        <Link href="/new">
+        <Link href="/posts/new">
           <WhiteButton>Post</WhiteButton>
         </Link>
       </HeaderContainer>

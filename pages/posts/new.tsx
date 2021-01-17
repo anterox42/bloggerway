@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
-import Layout from '../components/Layout';
+import Layout from '../../components/Layout';
 import { connect } from 'react-redux';
-import { fetchPosts } from '../actions';
-import { PostCard } from '../components/PostCard';
-import { Button } from '../components/Button';
-import { InputArea } from '../components/InputArea';
-import blogs from '../api/blogs';
+import { fetchPosts } from '../../actions';
+import { PostCard } from '../../components/PostCard';
+import { Button } from '../../components/Button';
+import { InputArea } from '../../components/InputArea';
+import blogs from '../../api/blogs';
 
 interface NewProps {
   fetchPosts: Function;
