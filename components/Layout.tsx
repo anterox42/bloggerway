@@ -1,41 +1,46 @@
-import React, { ReactNode } from 'react'
-import Link from 'next/link'
-import Head from 'next/head'
+import React, { ReactNode } from 'react';
+// import Link from 'next/link';
+import Head from 'next/head';
+import styled from 'styled-components';
+
+import Header from './Header';
+import Copyright from './Copyright';
 
 type Props = {
-  children?: ReactNode
-  title?: string
-}
+  children?: ReactNode;
+  title?: string;
+};
 
-const Layout = ({ children, title = 'This is the default title' }: Props) => (
-  <div>
-    <Head>
-      <title>{title}</title>
-      <meta charSet="utf-8" />
-      <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-    </Head>
+const Container = styled('div')`
+  max-width: 1024px;
+  margin: 0 auto;
+  font-family: Roboto, helvetica;
+  font-size: 16px;
+  padding: 0.5rem;
+`;
+
+const Layout = ({ children, title = 'Blogs' }: Props) => (
+  <>
     <header>
-      <nav>
-        <Link href="/">
-          <a>Home</a>
-        </Link>{' '}
-        |{' '}
-        <Link href="/about">
-          <a>About</a>
-        </Link>{' '}
-        |{' '}
-        <Link href="/users">
-          <a>Users List</a>
-        </Link>{' '}
-        | <a href="/api/users">Users API</a>
-      </nav>
+      <Header />
     </header>
-    {children}
-    <footer>
-      <hr />
-      <span>I'm here to stay (Footer)</span>
-    </footer>
-  </div>
-)
+    <Container>
+      <Head>
+        <title>{title}</title>
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Lobster&family=Roboto&display=swap"
+          rel="stylesheet"
+        ></link>
+      </Head>
 
-export default Layout
+      {children}
+      <footer>
+        <Copyright />
+      </footer>
+    </Container>
+  </>
+);
+
+export default Layout;

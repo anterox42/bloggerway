@@ -1,5 +1,5 @@
 {
-  "name": "with-typescript",
+  "name": "bloggerway",
   "version": "1.0.0",
   "scripts": {
     "dev": "next",
@@ -8,14 +8,22 @@
     "type-check": "tsc"
   },
   "dependencies": {
+    "@types/styled-components": "^5.1.7",
+    "axios": "^0.21.1",
     "next": "latest",
     "react": "^16.12.0",
-    "react-dom": "^16.12.0"
+    "react-dom": "^16.12.0",
+    "react-redux": "^7.2.2",
+    "redux": "^4.0.5",
+    "redux-devtools-extension": "^2.13.8",
+    "redux-thunk": "^2.3.0",
+    "styled-components": "^5.2.1"
   },
   "devDependencies": {
     "@types/node": "^12.12.21",
     "@types/react": "^16.9.16",
     "@types/react-dom": "^16.9.4",
+    "@types/react-redux": "^7.1.15",
     "typescript": "4.0"
   },
   "license": "MIT"
