@@ -59,9 +59,10 @@ const New: React.FC<NewProps> = (props: NewProps) => {
           </InputArea>
           <Button
             onClick={() => {
-              blogs.post('/posts', postContent);
-              router.replace('/');
-              props.fetchPosts();
+              blogs
+                .post('/posts', postContent)
+                .then(() => router.replace('/'))
+                .then(() => props.fetchPosts());
             }}
           >
             Save
