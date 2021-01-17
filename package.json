@@ -5,7 +5,9 @@
     "dev": "next",
     "build": "next build",
     "start": "next start",
-    "export": "next build && next export -o ./dist",
+    "build-stats": "ANALYZE=true npm run build",
+    "export": "next export -o dist",
+    "build-prod": "run-s clean build export",
     "type-check": "tsc"
   },
   "dependencies": {
