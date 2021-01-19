@@ -1,35 +1,45 @@
-//import Link from 'next/link';
 import { useEffect } from 'react';
 import Layout from '../components/Layout';
-import { connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { fetchPosts } from '../actions';
 import { StoreState } from '../reducers';
 import { Post } from '../actions';
 import Link from 'next/link';
 import { PostCard } from '../components/PostCard';
 
-interface IndexPageProps {
-  fetchPosts: Function;
-  posts: Post[];
-}
+const IndexPage: React.FC = () => {
+  const posts: Post[] = useSelector((state: StoreState) => state.posts.data);
 
-const IndexPage: React.FC<IndexPageProps> = (props: IndexPageProps) => {
+  const dispatch = useDispatch();
   useEffect(() => {
-    props.fetchPosts();
+    dispatch(fetchPosts());
   }, []);
 
-  //
-  const renderPreview = (text: string) => {
-    if (text.length < 200) {
-      return text;
+  const renderPreview = (post: Post) => {
+    if (post.body.length < 200) {
+      return post.body;
     } else {
-      return text.slice(0, 200) + '... Read more';
+      return (
+        <>
+          {post.body.slice(0, 200)}
+          {'... '}
+          <Link href={`/posts/${post.id}`}>
+            <span
+              style={{
+                color: '#ffb38a',
+                cursor: 'pointer',
+              }}
+            >
+              Read more
+            </span>
+          </Link>
+        </>
+      );
     }
   };
 
   const renderPosts = () => {
-    if (props.posts) {
-      
+    if (posts) {
       const compare = (a: any, b: any) => {
         const postA = Number(a.id);
         const postB = Number(b.id);
@@ -43,7 +53,7 @@ const IndexPage: React.FC<IndexPageProps> = (props: IndexPageProps) => {
         return comparison;
       };
 
-      const sortedPosts = [...props.posts].sort(compare);
+      const sortedPosts = [...posts].sort(compare);
 
       return sortedPosts.map((post: Post) => {
         return (
@@ -53,12 +63,12 @@ const IndexPage: React.FC<IndexPageProps> = (props: IndexPageProps) => {
                 <h2 style={{ color: 'orange' }}>{post.title.toUpperCase()}</h2>
               </a>
             </Link>
-            <p>{renderPreview(post.body)}</p>
+            <p>{renderPreview(post)}</p>
           </PostCard>
         );
       });
     } else {
-      return <div>Loading...</div>;
+      return <div></div>;
     }
   };
 
@@ -70,8 +80,4 @@ const IndexPage: React.FC<IndexPageProps> = (props: IndexPageProps) => {
   );
 };
 
-const mapStateToProps = ({ posts }: StoreState) => {
-  return { posts };
-};
-
-export default connect(mapStateToProps, { fetchPosts })(IndexPage);
+export default IndexPage;

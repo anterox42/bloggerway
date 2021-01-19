@@ -2,36 +2,41 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 //import Link from 'next/link';
 import Layout from '../../components/Layout';
-import { fetchPostDetails } from '../../actions';
-import { connect } from 'react-redux';
+import { fetchPostDetails, createComment } from '../../actions';
+import { useSelector, useDispatch } from 'react-redux';
 import { PostDetails } from '../../actions';
 import { StoreState } from '../../reducers';
 import { PostCard } from '../../components/PostCard';
 import { Button } from '../../components/Button';
-import blogs from '../../api/blogs';
 
-interface PostProps {
-  fetchPostDetails: Function;
-  postDetails: PostDetails;
-  newComment: string;
-}
-
-const Post: React.FC<PostProps> = (props: PostProps) => {
+const Post: React.FC = () => {
   const [newComment, setNewComment] = useState('');
+
+  const postDetails: PostDetails = useSelector(
+    (state: StoreState) => state.postDetails.data
+  );
+
   const router = useRouter();
 
   // seems to be async, so better to add a condition to useEffect
   const id: any = router.query.id;
 
+  const dispatch = useDispatch();
+
+  // Reload page when comment created
+  const commentCreatedStatus: any = useSelector(
+    (state: StoreState) => state.createComment
+  );
+
   useEffect(() => {
-    if (id) {
-      props.fetchPostDetails(id);
+    if (id !== undefined) {
+      dispatch(fetchPostDetails(id));
     }
-  }, [id, props.fetchPostDetails]);
+  }, [id, commentCreatedStatus]);
 
   const renderComments = () => {
-    if (props.postDetails.comments) {
-      return props.postDetails.comments.map((comment: any) => {
+    if (postDetails) {
+      return postDetails.comments.map((comment: any) => {
         return (
           <PostCard key={comment.id}>
             <p>{comment.body}</p>
@@ -48,15 +53,15 @@ const Post: React.FC<PostProps> = (props: PostProps) => {
     body: newComment,
   };
 
-  if (props.postDetails.title) {
-    return (
-      <>
-        <Layout title={props.postDetails.title}>
+  const renderBody = () => {
+    if (postDetails) {
+      return (
+        <>
           <PostCard>
             <h2 style={{ color: 'orange' }}>
-              {props.postDetails.title.toUpperCase()}
+              {postDetails.title.toUpperCase()}
             </h2>
-            <p>{props.postDetails.body}</p>
+            <p>{postDetails.body}</p>
           </PostCard>
           <h3>Comments:</h3>
           {renderComments()}
@@ -75,26 +80,25 @@ const Post: React.FC<PostProps> = (props: PostProps) => {
             />
             <Button
               onClick={() => {
-                blogs.post('/comments', commentContent).then(() => {
-                  props.fetchPostDetails(id).then(setNewComment(''));
-                });
+                dispatch(createComment(commentContent));
+                setNewComment('');
               }}
             >
               Add
             </Button>
           </PostCard>
-        </Layout>
-      </>
-    );
-  } else {
-    return <div />;
-  }
+        </>
+      );
+    }
+  };
+
+  return (
+    <>
+      <Layout title={postDetails ? postDetails.title : ''}>
+        {renderBody()}
+      </Layout>
+    </>
+  );
 };
 
-const mapStateToProps = ({ postDetails }: StoreState) => {
-  return { postDetails };
-};
-
-export default connect(mapStateToProps, {
-  fetchPostDetails,
-})(Post);
+export default Post;

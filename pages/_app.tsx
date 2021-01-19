@@ -1,6 +1,6 @@
 import { createGlobalStyle, ThemeProvider } from 'styled-components';
 import { Provider } from 'react-redux';
-import { useStore } from '../store';
+import { useStore } from '../store/store';
 
 const GlobalStyle = createGlobalStyle`
   body {
