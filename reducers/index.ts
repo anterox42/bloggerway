@@ -3,10 +3,9 @@ import { postsReducer } from './posts';
 import { createPostReducer } from './createPost';
 import { postDetailsReducer } from './postDetails';
 import { createCommentReducer } from './createComment';
-import { Post } from '../actions';
 
 export interface StoreState {
-  posts: Post[];
+  posts: any;
   postDetails: any;
   createPost: any;
   createComment: any;
